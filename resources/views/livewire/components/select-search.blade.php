@@ -1,5 +1,5 @@
 <div
-    x-data="{ open: false, selectedName: @entangle('selectedName').live, selectedId: $wire.entangle('selectedId').live}"
+    x-data="{ open: false, selectedName: @entangle('selectedName').live, selectedId: @entangle('selectedId').live }"
     class="relative w-full"
 >
     @if ($label)
@@ -11,7 +11,7 @@
                 @click="open = !open"
                 class="relative w-full bg-white border border-gray-300 rounded-lg shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
             <span>
-                <span x-text="$wire.selectedName ?? $wire.placeholder"></span>
+                <span x-text="selectedName || @js($placeholder)"></span>
             </span>
             <span class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                 <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -32,10 +32,10 @@
             <ul class="py-1">
                 @forelse ($data as $key => $value)
                     <li wire:key="{{ $key }}"
-                        @click="selectedName = '{{ $value }}'; selectedId = {{ $key }}; open = false"
+                        @click="selectedName = @js($value); selectedId = @js((int) $key); open = false"
                         class="cursor-pointer select-none relative py-2 pl-3 pr-9 hover:bg-indigo-600 hover:text-white">
                         <span>{{ $value }}</span>
-                        <span x-show="$wire.selectedId == '{{ $key }}'" class="absolute inset-y-0 right-0 flex items-center pr-4 text-indigo-600">
+                        <span x-show="selectedId === @js((int) $key)" class="absolute inset-y-0 right-0 flex items-center pr-4 text-indigo-600">
                             <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                             </svg>

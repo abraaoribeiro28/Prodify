@@ -21,7 +21,7 @@ class SelectSearch extends Component
      *
      * @return View
      */
-    public function render()
+    public function render(): View
     {
         return view('livewire.components.select-search');
     }
@@ -34,8 +34,10 @@ class SelectSearch extends Component
      */
     public function updatedSearch(): void
     {
-        if (Str::length($this->search) > 2) {
-            $this->dispatch('searching', $this->search);
+        $search = trim($this->search);
+
+        if (Str::length($search) > 2) {
+            $this->dispatch('searching', $search);
         } else {
             $this->data = [];
         }
@@ -75,12 +77,7 @@ class SelectSearch extends Component
     #[On('reset-form')]
     public function resetForm(): void
     {
-        $this->reset([
-            'data',
-            'search',
-            'selectedName',
-            'selectedId',
-        ]);
+        $this->resetExcept(['label', 'placeholder']);
     }
 
     /**
@@ -92,8 +89,19 @@ class SelectSearch extends Component
     #[On('set-property')]
     public function setProperty(array $data): void
     {
-        $this->selectedId = $data['id'];
-        $this->selectedName = $data['name'];
-        $this->data = [$data['id'] => $data['name']];
+        $id = $data['id'] ?? null;
+        $name = $data['name'] ?? null;
+
+        if ($id === null || $name === null) {
+            $this->selectedId = null;
+            $this->selectedName = null;
+            $this->data = [];
+
+            return;
+        }
+
+        $this->selectedId = (int) $id;
+        $this->selectedName = (string) $name;
+        $this->data = [$this->selectedId => $this->selectedName];
     }
 }

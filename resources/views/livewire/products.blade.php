@@ -90,10 +90,10 @@
                         @endif
                     </td>
                     <td class="px-6 py-4 flex justify-end">
-                        <button wire:click="edit({{$product->id}})" type="button" class="px-3 py-2 text-xs font-medium text-center inline-flex items-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">
+                        <button wire:click="edit({{ $product->id }})" type="button" class="px-3 py-2 text-xs font-medium text-center inline-flex items-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">
                             Editar
                         </button>
-                        <button wire:click="confirmDelete({{$product->id}})" type="button" class="ml-1 px-3 py-2 text-xs font-medium text-center inline-flex items-center text-white bg-red-700 hover:bg-red-800 rounded-lg  focus:ring-4 focus:ring-red-300 focus:outline-none">
+                        <button wire:click="confirmDelete({{ $product->id }})" type="button" class="ml-1 px-3 py-2 text-xs font-medium text-center inline-flex items-center text-white bg-red-700 hover:bg-red-800 rounded-lg focus:ring-4 focus:ring-red-300 focus:outline-none">
                             Excluir
                         </button>
                     </td>
@@ -116,28 +116,28 @@
             <div class="mt-4 text-sm text-gray-600 flex flex-wrap">
                 <div class="mb-4 w-full md:w-6/12 md:pr-1">
                     <x-label class="mb-1">Nome</x-label>
-                    <x-input placeholder="Nome do produto" class="w-full sm:text-sm py-2" wire:model.live="name" name="name"/>
+                    <x-input placeholder="Nome do produto" class="w-full sm:text-sm py-2" wire:model.live.debounce.500ms="form.name" name="name"/>
                     <div class="text-red-500">
-                        @if ($errors->has('slug'))
-                            {{ $errors->first('slug') }}
-                        @elseif ($errors->has('name'))
-                            {{ $errors->first('name') }}
+                        @if ($errors->has('form.slug'))
+                            {{ $errors->first('form.slug') }}
+                        @elseif ($errors->has('form.name'))
+                            {{ $errors->first('form.name') }}
                         @endif
                     </div>
                 </div>
 
                 <div class="mb-4 w-full md:w-6/12 md:pl-1">
                     <livewire:components.select-search label="Categoria" />
-                    @error('category_id')
+                    @error('form.category_id')
                         {{ $message }}
                     @enderror
                 </div>
 
                 <div class="mb-4 w-full md:w-6/12 md:pr-1">
                     <x-label class="mb-1">Preço</x-label>
-                    <x-input placeholder="R$0,00" class="money w-full sm:text-sm py-2" wire:model.live="price" name="price"/>
+                    <x-input placeholder="R$0,00" class="money w-full sm:text-sm py-2" wire:model.live.debounce.500ms="form.price" name="price"/>
                     <div class="text-red-500">
-                        @error('price')
+                        @error('form.price')
                             {{ $message }}
                         @enderror
                     </div>
@@ -145,9 +145,9 @@
 
                 <div class="mb-4 w-full md:w-6/12 md:pl-1">
                     <x-label class="mb-1">Estoque</x-label>
-                    <x-input placeholder="Quantidade em estoque" class="w-full sm:text-sm py-2" wire:model.live="stock" name="stock"/>
+                    <x-input placeholder="Quantidade em estoque" class="w-full sm:text-sm py-2" wire:model.live.debounce.500ms="form.stock" name="stock"/>
                     <div class="text-red-500">
-                        @error('stock')
+                        @error('form.stock')
                             {{ $message }}
                         @enderror
                     </div>
@@ -155,8 +155,8 @@
 
                 <div class="mb-4 w-full">
                     <x-label class="mb-1">Descrição</x-label>
-                    <textarea wire:model.live="description" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full sm:text-sm py-2" rows="6"></textarea>
-                    @error('description')
+                    <textarea wire:model.live.debounce.500ms="form.description" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full sm:text-sm py-2" rows="6"></textarea>
+                    @error('form.description')
                         {{ $message }}
                     @enderror
                 </div>
@@ -168,21 +168,21 @@
                             <path d="M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2m2.354 5.146a.5.5 0 0 1-.708.708L8.5 6.707V10.5a.5.5 0 0 1-1 0V6.707L6.354 7.854a.5.5 0 1 1-.708-.708l2-2a.5.5 0 0 1 .708 0z"/>
                         </svg>
                         <p class="mt-2 text-sm text-gray-600">Arraste e solte ou clique para selecionar</p>
-                        <p class="text-xs text-gray-500">JPG, PNG ou WEBP — até 2 MB (máx. 5 arquivos)</p>
-                        <input id="productImages" type="file" class="hidden" wire:model.live="images" accept="image/*" multiple>
+                        <p class="text-xs text-gray-500">JPG, PNG ou WEBP - até 2 MB (máx. 5 arquivos)</p>
+                        <input id="productImages" type="file" class="hidden" wire:model.live="form.images" accept="image/*" multiple>
                     </label>
                     <div class="text-red-500 mt-1">
-                        @error('images')
+                        @error('form.images')
                             {{ $message }}
                         @enderror
-                        @error('images.*')
+                        @error('form.images.*')
                             {{ $message }}
                         @enderror
                     </div>
 
-                    @if($images)
+                    @if($form->images)
                         <div class="mt-3 flex flex-wrap gap-3">
-                            @foreach($images as $index => $image)
+                            @foreach($form->images as $index => $image)
                                 <div wire:key="image-preview-{{ $index }}" class="relative w-24 h-24 rounded-lg overflow-hidden border shadow-sm">
                                     <img src="{{ $image->temporaryUrl() }}" alt="Pré-visualização da imagem" class="object-cover w-full h-full">
                                     <button type="button" wire:click="removeImage({{ $index }})" class="absolute top-1 right-1 bg-white/80 rounded-full p-1 shadow hover:text-red-600">
@@ -195,11 +195,11 @@
                         </div>
                     @endif
 
-                    @if($existingImages)
+                    @if($form->existingImages)
                         <div class="mt-4">
                             <p class="text-sm text-gray-700 mb-2">Imagens atuais</p>
                             <div class="flex flex-wrap gap-3">
-                                @foreach($existingImages as $stored)
+                                @foreach($form->existingImages as $stored)
                                     <div wire:key="image-stored-{{ $stored['id'] ?? $loop->index }}" class="w-24 h-24 rounded-lg overflow-hidden border shadow-sm">
                                         <img src="{{ $stored['url'] ?? '' }}" alt="{{ $stored['name'] ?? 'Imagem do produto' }}" class="object-cover w-full h-full">
                                     </div>
@@ -209,7 +209,7 @@
                     @endif
                 </div>
 
-                <x-switch-input model="status" label="Marque para ativar" />
+                <x-switch-input model="form.status" label="Marque para ativar" />
             </div>
         </div>
 
@@ -248,11 +248,25 @@
 </div>
 
 <script>
-    document.querySelector('.money').addEventListener('input', function(e) {
-        let value = e.target.value.replace(/\D/g, '');
-        value = (parseInt(value, 10) / 100).toFixed(2) + '';
-        value = value.replace('.', ',');
-        value = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-        e.target.value = 'R$ ' + value;
+    document.addEventListener('DOMContentLoaded', function () {
+        const input = document.querySelector('.money');
+
+        if (!input) {
+            return;
+        }
+
+        input.addEventListener('input', function (e) {
+            let value = e.target.value.replace(/\D/g, '');
+
+            if (!value) {
+                e.target.value = '';
+                return;
+            }
+
+            value = (parseInt(value, 10) / 100).toFixed(2) + '';
+            value = value.replace('.', ',');
+            value = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+            e.target.value = 'R$ ' + value;
+        });
     });
 </script>

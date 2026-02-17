@@ -79,10 +79,10 @@
                             @endif
                         </td>
                         <td class="px-6 py-4 flex justify-end">
-                            <button wire:click="edit({{$category->id}})" type="button" class="px-3 py-2 text-xs font-medium text-center inline-flex items-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">
+                            <button wire:click="edit({{ $category->id }})" type="button" class="px-3 py-2 text-xs font-medium text-center inline-flex items-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">
                                 Editar
                             </button>
-                            <button wire:click="confirmDelete({{$category->id}})" type="button" class="ml-1 px-3 py-2 text-xs font-medium text-center inline-flex items-center text-white bg-red-700 hover:bg-red-800 rounded-lg  focus:ring-4 focus:ring-red-300 focus:outline-none">
+                            <button wire:click="confirmDelete({{ $category->id }})" type="button" class="ml-1 px-3 py-2 text-xs font-medium text-center inline-flex items-center text-white bg-red-700 hover:bg-red-800 rounded-lg focus:ring-4 focus:ring-red-300 focus:outline-none">
                                 Excluir
                             </button>
                         </td>
@@ -106,21 +106,24 @@
             <div class="mt-4 text-sm text-gray-600">
                 <div class="mb-4">
                     <x-label class="mb-1">Nome</x-label>
-                    <x-input placeholder="Nome da categoria" class="w-full" wire:model.live="name" name="name"/>
+                    <x-input placeholder="Nome da categoria" class="w-full" wire:model.live.debounce.500ms="form.name" name="name"/>
                     <div class="text-red-500">
-                        @if ($errors->has('slug'))
-                            {{ $errors->first('slug') }}
-                        @elseif ($errors->has('name'))
-                            {{ $errors->first('name') }}
+                        @if ($errors->has('form.slug'))
+                            {{ $errors->first('form.slug') }}
+                        @elseif ($errors->has('form.name'))
+                            {{ $errors->first('form.name') }}
                         @endif
                     </div>
                 </div>
 
                 <div class="mb-4">
                     <livewire:components.select-search label="Categoria parente" />
+                    @error('form.parent_id')
+                        <span class="text-red-500">{{ $message }}</span>
+                    @enderror
                 </div>
 
-                <x-switch-input model="status" label="Marque para ativar" />
+                <x-switch-input model="form.status" label="Marque para ativar" />
             </div>
         </div>
 
