@@ -3,7 +3,7 @@
     'label' => 'Ativar/Desativar',
 ])
 
-<div x-data="{ localStatus: @entangle('status') }" class="flex items-center">
+<div x-data="{ localStatus: @entangle($model).live }" class="flex items-center">
     <span class="mr-2 text-sm text-gray-700">{{ $label }}</span>
     <button
         type="button"
